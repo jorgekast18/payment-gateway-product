@@ -1,0 +1,8 @@
+aws_region = "us-east-1"
+
+# Payment gateway sandbox credentials (never commit the real terraform.tfvars).
+payment_api_url          = "https://your-sandbox-gateway/v1"
+payment_public_key       = "pub_replace_me"
+payment_private_key      = "prv_replace_me"
+payment_integrity_secret = "integrity_replace_me"
+payment_currency         = "COP"
