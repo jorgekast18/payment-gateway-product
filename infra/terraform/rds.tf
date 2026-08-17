@@ -10,7 +10,7 @@ resource "random_password" "db" {
 # App Runner VPC connector.
 resource "aws_security_group" "db" {
   name_prefix = "${var.project_name}-db-"
-  vpc_id      = data.aws_vpc.default.id
+  vpc_id      = aws_vpc.main.id
 
   ingress {
     description = "PostgreSQL"
@@ -34,7 +34,7 @@ resource "aws_security_group" "db" {
 
 resource "aws_db_subnet_group" "db" {
   name_prefix = "${var.project_name}-"
-  subnet_ids  = data.aws_subnets.default.ids
+  subnet_ids  = aws_subnet.public[*].id
 }
 
 resource "aws_db_instance" "db" {

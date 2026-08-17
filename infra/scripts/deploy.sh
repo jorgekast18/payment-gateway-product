@@ -21,7 +21,7 @@ REGISTRY="${ECR_URL%%/*}"
 
 # 2. Build the API image for the App Runner runtime and push it.
 aws ecr get-login-password --region "$REGION" | docker login --username AWS --password-stdin "$REGISTRY"
-docker buildx build --platform linux/amd64 -f "$ROOT/apps/api/Dockerfile" -t "$ECR_URL:latest" --push "$ROOT"
+docker buildx build --platform linux/amd64 -f "$ROOT/apps/api/Dockerfile" -t "${ECR_URL}:latest" --push "$ROOT"
 
 # 3. Provision the remaining infrastructure.
 terraform apply -input=false -auto-approve
