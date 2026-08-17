@@ -1,0 +1,83 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Product {
+  id           String        @id @default(uuid())
+  name         String
+  description  String
+  priceInCents Int
+  imageUrl     String
+  stock        Int
+  createdAt    DateTime      @default(now())
+  updatedAt    DateTime      @updatedAt
+  transactions Transaction[]
+
+  @@map("products")
+}
+
+model Customer {
+  id           String        @id @default(uuid())
+  fullName     String
+  email        String
+  phone        String
+  createdAt    DateTime      @default(now())
+  transactions Transaction[]
+
+  @@map("customers")
+}
+
+model Delivery {
+  id          String         @id @default(uuid())
+  address     String
+  city        String
+  region      String
+  postalCode  String
+  status      DeliveryStatus @default(PENDING)
+  createdAt   DateTime       @default(now())
+  updatedAt   DateTime       @updatedAt
+  transaction Transaction?
+
+  @@map("deliveries")
+}
+
+model Transaction {
+  id                   String            @id @default(uuid())
+  reference            String            @unique
+  status               TransactionStatus @default(PENDING)
+  quantity             Int
+  productAmountInCents Int
+  baseFeeInCents       Int
+  deliveryFeeInCents   Int
+  amountInCents        Int
+  cardBrand            String?
+  cardLastFour         String?
+  gatewayTransactionId String?
+  productId            String
+  customerId           String
+  deliveryId           String?           @unique
+  product              Product           @relation(fields: [productId], references: [id])
+  customer             Customer          @relation(fields: [customerId], references: [id])
+  delivery             Delivery?         @relation(fields: [deliveryId], references: [id])
+  createdAt            DateTime          @default(now())
+  updatedAt            DateTime          @updatedAt
+
+  @@map("transactions")
+}
+
+enum TransactionStatus {
+  PENDING
+  APPROVED
+  DECLINED
+  ERROR
+}
+
+enum DeliveryStatus {
+  PENDING
+  ASSIGNED
+}
