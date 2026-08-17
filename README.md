@@ -89,7 +89,16 @@ Coverage is enforced above 80% on both apps (Jest `coverageThreshold`).
 | api | 97.6% | 94.7% | 99.2% | 97.6% |
 | web | 90.0% | 86.1% | 85.7% | 89.9% |
 
-A SonarQube analysis of the project is attached separately.
+### SonarQube
+
+Both applications pass the SonarQube quality gate.
+
+| API | Web |
+| --- | --- |
+| ![API SonarQube report](docs/Sonar/Report%20API.png) | ![Web SonarQube report](docs/Sonar/Report%20Web.png) |
+
+Each app has its own `sonar-project.properties`; run `npm run test:cov` first to
+generate the coverage reports the scanner consumes.
 
 ## Security
 
