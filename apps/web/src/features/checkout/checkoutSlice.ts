@@ -5,6 +5,16 @@ import type { RootState } from '../../app/store';
 
 export type CheckoutStatus = 'idle' | 'creating' | 'paying' | 'error';
 
+export interface CheckoutDraft {
+  fullName: string;
+  email: string;
+  phone: string;
+  address: string;
+  city: string;
+  region: string;
+  postalCode: string;
+}
+
 export interface CheckoutState {
   product?: Product;
   quantity: number;
@@ -14,6 +24,7 @@ export interface CheckoutState {
   transaction?: Transaction;
   status: CheckoutStatus;
   error?: string;
+  draft?: CheckoutDraft;
 }
 
 const initialState: CheckoutState = { quantity: 1, status: 'idle' };
@@ -67,6 +78,9 @@ const checkoutSlice = createSlice({
       state.delivery = action.payload.delivery;
       state.card = action.payload.card;
     },
+    saveDraft: (state, action: PayloadAction<CheckoutDraft>) => {
+      state.draft = action.payload;
+    },
     resetCheckout: () => initialState,
   },
   extraReducers: (builder) => {
@@ -98,5 +112,5 @@ const checkoutSlice = createSlice({
   },
 });
 
-export const { selectProduct, setContact, resetCheckout } = checkoutSlice.actions;
+export const { selectProduct, setContact, saveDraft, resetCheckout } = checkoutSlice.actions;
 export default checkoutSlice.reducer;

@@ -43,6 +43,29 @@ describe('CardDeliveryPage', () => {
     expect(screen.queryByText('Payment details')).not.toBeInTheDocument();
   });
 
+  it('recovers the saved draft after a refresh', () => {
+    const store = makeStore({
+      checkout: {
+        quantity: 1,
+        status: 'idle',
+        product,
+        draft: {
+          fullName: 'Recovered Name',
+          email: 'recovered@example.com',
+          phone: '3001112233',
+          address: 'Calle 9',
+          city: 'Cali',
+          region: 'Valle',
+          postalCode: '760001',
+        },
+      },
+    });
+    renderWithProviders(<CardDeliveryPage />, { store });
+
+    expect(screen.getByLabelText('Full name')).toHaveValue('Recovered Name');
+    expect(screen.getByLabelText('City')).toHaveValue('Cali');
+  });
+
   it('shows validation errors on an empty submission', async () => {
     renderWithProviders(<CardDeliveryPage />, { store: storeWithProduct() });
 

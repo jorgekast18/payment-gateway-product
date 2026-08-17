@@ -3,6 +3,7 @@ import reducer, {
   createPendingTransaction,
   payTransaction,
   resetCheckout,
+  saveDraft,
   selectProduct,
   setContact,
 } from './checkoutSlice';
@@ -58,6 +59,20 @@ describe('checkoutSlice reducers', () => {
     const state = reducer(initial, setContact(contact));
     expect(state.customer).toEqual(contact.customer);
     expect(state.card).toEqual(contact.card);
+  });
+
+  it('saves the form draft for refresh recovery', () => {
+    const draft = {
+      fullName: 'Jane',
+      email: 'jane@example.com',
+      phone: '+57300',
+      address: 'a',
+      city: 'b',
+      region: 'c',
+      postalCode: 'd',
+    };
+    const state = reducer(initial, saveDraft(draft));
+    expect(state.draft).toEqual(draft);
   });
 
   it('resets the checkout', () => {

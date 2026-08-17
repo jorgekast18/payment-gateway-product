@@ -1,7 +1,7 @@
-import { ChangeEvent, FormEvent, useState } from 'react';
+import { ChangeEvent, FormEvent, useEffect, useState } from 'react';
 import { Navigate, useNavigate } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from '../app/hooks';
-import { createPendingTransaction, setContact } from '../features/checkout/checkoutSlice';
+import { createPendingTransaction, saveDraft, setContact } from '../features/checkout/checkoutSlice';
 import { CardInput } from '../api/types';
 import {
   CardErrors,
@@ -53,8 +53,32 @@ export const CardDeliveryPage = () => {
   const product = useAppSelector((state) => state.checkout.product);
   const status = useAppSelector((state) => state.checkout.status);
   const apiError = useAppSelector((state) => state.checkout.error);
-  const [form, setForm] = useState<FormState>(emptyForm);
+  const draft = useAppSelector((state) => state.checkout.draft);
+  const [form, setForm] = useState<FormState>(() => ({ ...emptyForm, ...(draft ?? {}) }));
   const [errors, setErrors] = useState<FormErrors>({});
+
+  useEffect(() => {
+    dispatch(
+      saveDraft({
+        fullName: form.fullName,
+        email: form.email,
+        phone: form.phone,
+        address: form.address,
+        city: form.city,
+        region: form.region,
+        postalCode: form.postalCode,
+      }),
+    );
+  }, [
+    dispatch,
+    form.fullName,
+    form.email,
+    form.phone,
+    form.address,
+    form.city,
+    form.region,
+    form.postalCode,
+  ]);
 
   if (!product) {
     return <Navigate to="/" replace />;
