@@ -64,12 +64,23 @@ export const SummaryPage = () => {
         {!card && (
           <div className="alert">For your security, please re-enter your card details.</div>
         )}
-        {error && <div className="alert">{error}</div>}
+        {error && (
+          <div className="alert">
+            We couldn&apos;t process your payment. Please check your details and try again.
+          </div>
+        )}
 
         {card ? (
-          <Button block loading={status === 'paying'} onClick={pay}>
-            Pay {formatCurrency(transaction.amountInCents)}
-          </Button>
+          <div className="stack">
+            <Button block loading={status === 'paying'} onClick={pay}>
+              Pay {formatCurrency(transaction.amountInCents)}
+            </Button>
+            {error && (
+              <Button block variant="ghost" onClick={() => navigate('/checkout')}>
+                Edit payment details
+              </Button>
+            )}
+          </div>
         ) : (
           <Button block variant="ghost" onClick={() => navigate('/checkout')}>
             Back to payment details

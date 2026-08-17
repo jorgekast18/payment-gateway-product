@@ -45,9 +45,20 @@ export const StatusPage = () => {
         )}
         <p className="status__detail">Total: {formatCurrency(transaction.amountInCents)}</p>
       </div>
-      <Button block onClick={backToStore}>
-        Back to store
-      </Button>
+      {transaction.status === 'APPROVED' ? (
+        <Button block onClick={backToStore}>
+          Back to store
+        </Button>
+      ) : (
+        <div className="stack">
+          <Button block onClick={() => navigate('/checkout')}>
+            Try again
+          </Button>
+          <Button block variant="ghost" onClick={backToStore}>
+            Back to store
+          </Button>
+        </div>
+      )}
     </Frame>
   );
 };
