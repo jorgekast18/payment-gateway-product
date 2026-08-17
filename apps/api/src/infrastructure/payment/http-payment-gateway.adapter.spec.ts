@@ -47,7 +47,7 @@ interface CapturedBody {
 
 let capturedTransactionBody: CapturedBody | null;
 
-const installFetch = (pollStatuses: string[], transactionOk = true): jest.Mock => {
+const installFetch = (pollStatuses: string[], transactionStatus = 200): jest.Mock => {
   capturedTransactionBody = null;
   const statuses = [...pollStatuses];
   const mock = jest.fn((url: string, init?: { method?: string; body?: string }) => {
@@ -62,8 +62,8 @@ const installFetch = (pollStatuses: string[], transactionOk = true): jest.Mock =
       capturedTransactionBody = JSON.parse(init?.body ?? '{}') as CapturedBody;
       return jsonResponse(
         { data: { id: 'g1', status: 'PENDING' } },
-        transactionOk,
-        transactionOk ? 200 : 422,
+        transactionStatus < 400,
+        transactionStatus,
       );
     }
     return jsonResponse({ data: { id: 'g1', status: statuses.shift() ?? 'PENDING' } });
@@ -120,10 +120,19 @@ describe('HttpPaymentGateway', () => {
     expect(result.status).toBe('PENDING');
   });
 
-  it('throws when the gateway responds with a non-ok status', async () => {
-    installFetch(['APPROVED'], false);
+  it('declines the payment when the gateway rejects the card (4xx)', async () => {
+    installFetch([], 422);
     const gateway = new HttpPaymentGateway(config);
 
-    await expect(gateway.charge(chargeInput)).rejects.toThrow('status 422');
+    const result = await gateway.charge(chargeInput);
+
+    expect(result.status).toBe('DECLINED');
+  });
+
+  it('throws when the gateway fails with a server error (5xx)', async () => {
+    installFetch([], 500);
+    const gateway = new HttpPaymentGateway(config);
+
+    await expect(gateway.charge(chargeInput)).rejects.toThrow('status 500');
   });
 });

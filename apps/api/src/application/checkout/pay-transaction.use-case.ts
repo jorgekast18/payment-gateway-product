@@ -64,7 +64,7 @@ export class PayTransactionUseCase {
           holder: card.holder,
         },
       });
-    } catch (error) {
+    } catch {
       await this.transactions.finalize({
         transactionId: transaction.id!,
         status: 'ERROR',
@@ -72,8 +72,9 @@ export class PayTransactionUseCase {
         cardBrand: card.brand,
         cardLastFour: card.lastFour,
       });
-      const reason = error instanceof Error ? error.message : 'unexpected gateway failure';
-      return err(new PaymentGatewayError(reason));
+      return err(
+        new PaymentGatewayError('the payment service is temporarily unavailable, please try again'),
+      );
     }
 
     if (charge.status === 'APPROVED') {

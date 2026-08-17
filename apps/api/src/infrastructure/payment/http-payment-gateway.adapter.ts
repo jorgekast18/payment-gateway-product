@@ -30,35 +30,53 @@ interface AuthorizationTokens {
 
 const TERMINAL_STATUSES: readonly string[] = ['APPROVED', 'DECLINED', 'ERROR', 'VOIDED'];
 
+class GatewayHttpError extends Error {
+  constructor(readonly status: number) {
+    super(`payment gateway responded with status ${status}`);
+  }
+}
+
+const isClientError = (error: unknown): boolean =>
+  error instanceof GatewayHttpError && error.status >= 400 && error.status < 500;
+
 @Injectable()
 export class HttpPaymentGateway implements PaymentGateway {
   constructor(@Inject(PAYMENT_GATEWAY_CONFIG) private readonly config: PaymentGatewayConfig) {}
 
   async charge(input: ChargeCardInput): Promise<ChargeResult> {
-    const tokens = await this.fetchAuthorizationTokens();
-    const cardToken = await this.tokenizeCard(input.card);
+    try {
+      const tokens = await this.fetchAuthorizationTokens();
+      const cardToken = await this.tokenizeCard(input.card);
 
-    const created = await this.request<TransactionResponse>(
-      'POST',
-      '/transactions',
-      {
-        amount_in_cents: input.amountInCents,
-        currency: this.config.currency,
-        customer_email: input.customerEmail,
-        reference: input.reference,
-        acceptance_token: tokens.acceptance,
-        accept_personal_auth: tokens.personalDataAuth,
-        signature: this.buildSignature(input.reference, input.amountInCents),
-        payment_method: {
-          type: 'CARD',
-          token: cardToken,
-          installments: this.config.installments,
+      const created = await this.request<TransactionResponse>(
+        'POST',
+        '/transactions',
+        {
+          amount_in_cents: input.amountInCents,
+          currency: this.config.currency,
+          customer_email: input.customerEmail,
+          reference: input.reference,
+          acceptance_token: tokens.acceptance,
+          accept_personal_auth: tokens.personalDataAuth,
+          signature: this.buildSignature(input.reference, input.amountInCents),
+          payment_method: {
+            type: 'CARD',
+            token: cardToken,
+            installments: this.config.installments,
+          },
         },
-      },
-      this.config.privateKey,
-    );
+        this.config.privateKey,
+      );
 
-    return this.waitForResolution(created.data.id);
+      return await this.waitForResolution(created.data.id);
+    } catch (error) {
+      // A 4xx means the gateway rejected the card data: model it as a declined
+      // payment (a normal business outcome) instead of an infrastructure failure.
+      if (isClientError(error)) {
+        return { gatewayTransactionId: '', status: 'DECLINED' };
+      }
+      throw error;
+    }
   }
 
   private async fetchAuthorizationTokens(): Promise<AuthorizationTokens> {
@@ -149,7 +167,7 @@ export class HttpPaymentGateway implements PaymentGateway {
 
     const payload = (await response.json().catch(() => null)) as unknown;
     if (!response.ok) {
-      throw new Error(`payment gateway responded with status ${response.status}`);
+      throw new GatewayHttpError(response.status);
     }
     return payload as T;
   }
