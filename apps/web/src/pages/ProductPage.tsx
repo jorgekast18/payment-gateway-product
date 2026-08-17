@@ -6,6 +6,7 @@ import { selectProduct } from '../features/checkout/checkoutSlice';
 import { formatCurrency } from '../domain/money';
 import { Frame } from '../components/Frame';
 import { Button } from '../components/Button';
+import { imageForProduct } from '../assets/products';
 
 export const ProductPage = () => {
   const dispatch = useAppDispatch();
@@ -52,7 +53,13 @@ export const ProductPage = () => {
                   className={`thumb${itemIndex === index ? ' thumb--active' : ''}`}
                   onClick={() => select(itemIndex)}
                 >
-                  <img src={item.imageUrl} alt={item.name} loading="lazy" width={56} height={56} />
+                  <img
+                    src={imageForProduct(item.id, item.imageUrl)}
+                    alt={item.name}
+                    loading="lazy"
+                    width={56}
+                    height={56}
+                  />
                 </button>
               ))}
             </div>
@@ -60,7 +67,7 @@ export const ProductPage = () => {
 
           <img
             className="product__image"
-            src={product.imageUrl}
+            src={imageForProduct(product.id, product.imageUrl)}
             alt={product.name}
             loading="lazy"
             width={460}
