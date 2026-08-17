@@ -1,16 +1,16 @@
-import { err, ok, Result } from '../../shared/result';
-import { Customer } from '../../domain/customer/customer.entity';
-import { CustomerRepository } from '../../domain/customer/customer.repository';
-import { Delivery } from '../../domain/delivery/delivery.entity';
-import { DeliveryRepository } from '../../domain/delivery/delivery.repository';
-import { ProductRepository } from '../../domain/product/product.repository';
+import { err, ok, Result } from 'src/shared/result';
+import { Customer } from 'src/domain/customer/customer.entity';
+import { CustomerRepository } from 'src/domain/customer/customer.repository';
+import { Delivery } from 'src/domain/delivery/delivery.entity';
+import { DeliveryRepository } from 'src/domain/delivery/delivery.repository';
+import { ProductRepository } from 'src/domain/product/product.repository';
 import {
   InsufficientStockError,
   InvalidQuantityError,
   ProductNotFoundError,
-} from '../../domain/product/product.errors';
-import { Transaction } from '../../domain/transaction/transaction.entity';
-import { TransactionRepository } from '../../domain/transaction/transaction.repository';
+} from 'src/domain/product/product.errors';
+import { Transaction } from 'src/domain/transaction/transaction.entity';
+import { TransactionRepository } from 'src/domain/transaction/transaction.repository';
 import { PricingConfig } from '../ports/pricing.config';
 import { ReferenceGenerator } from '../ports/reference-generator';
 
@@ -31,9 +31,7 @@ export interface CreateTransactionCommand {
 }
 
 export type CreateTransactionError =
-  | InvalidQuantityError
-  | ProductNotFoundError
-  | InsufficientStockError;
+  InvalidQuantityError | ProductNotFoundError | InsufficientStockError;
 
 export class CreateTransactionUseCase {
   constructor(

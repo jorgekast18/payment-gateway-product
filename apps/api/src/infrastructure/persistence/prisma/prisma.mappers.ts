@@ -4,11 +4,10 @@ import type {
   Product as ProductRow,
   Transaction as TransactionRow,
 } from '@prisma/client';
-import { Customer } from '../../../domain/customer/customer.entity';
-import { Delivery, DeliveryStatus } from '../../../domain/delivery/delivery.entity';
-import { Product } from '../../../domain/product/product.entity';
-import { Transaction } from '../../../domain/transaction/transaction.entity';
-import { TransactionStatus } from '../../../domain/transaction/transaction-status';
+import { Customer } from 'src/domain/customer/customer.entity';
+import { Delivery } from 'src/domain/delivery/delivery.entity';
+import { Product } from 'src/domain/product/product.entity';
+import { Transaction } from 'src/domain/transaction/transaction.entity';
 
 export const toProduct = (row: ProductRow): Product =>
   new Product({
@@ -35,14 +34,14 @@ export const toDelivery = (row: DeliveryRow): Delivery =>
     city: row.city,
     region: row.region,
     postalCode: row.postalCode,
-    status: row.status as DeliveryStatus,
+    status: row.status,
   });
 
 export const toTransaction = (row: TransactionRow): Transaction =>
   Transaction.fromPersistence({
     id: row.id,
     reference: row.reference,
-    status: row.status as TransactionStatus,
+    status: row.status,
     quantity: row.quantity,
     productAmountInCents: row.productAmountInCents,
     baseFeeInCents: row.baseFeeInCents,

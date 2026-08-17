@@ -1,5 +1,5 @@
-import { Product } from '../../domain/product/product.entity';
-import { ProductRepository } from '../../domain/product/product.repository';
+import { Product } from 'src/domain/product/product.entity';
+import { ProductRepository } from 'src/domain/product/product.repository';
 import { ListProductsUseCase } from './list-products.use-case';
 
 describe('ListProductsUseCase', () => {

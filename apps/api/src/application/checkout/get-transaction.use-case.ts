@@ -1,7 +1,7 @@
-import { err, ok, Result } from '../../shared/result';
-import { Transaction } from '../../domain/transaction/transaction.entity';
-import { TransactionRepository } from '../../domain/transaction/transaction.repository';
-import { TransactionNotFoundError } from '../../domain/transaction/transaction.errors';
+import { err, ok, Result } from 'src/shared/result';
+import { Transaction } from 'src/domain/transaction/transaction.entity';
+import { TransactionRepository } from 'src/domain/transaction/transaction.repository';
+import { TransactionNotFoundError } from 'src/domain/transaction/transaction.errors';
 
 export class GetTransactionUseCase {
   constructor(private readonly transactions: TransactionRepository) {}

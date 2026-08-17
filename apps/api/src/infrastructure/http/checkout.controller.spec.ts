@@ -1,11 +1,11 @@
 import { HttpException } from '@nestjs/common';
-import { CreateTransactionUseCase } from '../../application/checkout/create-transaction.use-case';
-import { GetTransactionUseCase } from '../../application/checkout/get-transaction.use-case';
-import { PayTransactionUseCase } from '../../application/checkout/pay-transaction.use-case';
-import { InvalidCreditCardError } from '../../domain/payment/payment.errors';
-import { TransactionNotFoundError } from '../../domain/transaction/transaction.errors';
-import { Transaction } from '../../domain/transaction/transaction.entity';
-import { err, ok } from '../../shared/result';
+import { CreateTransactionUseCase } from 'src/application/checkout/create-transaction.use-case';
+import { GetTransactionUseCase } from 'src/application/checkout/get-transaction.use-case';
+import { PayTransactionUseCase } from 'src/application/checkout/pay-transaction.use-case';
+import { InvalidCreditCardError } from 'src/domain/payment/payment.errors';
+import { TransactionNotFoundError } from 'src/domain/transaction/transaction.errors';
+import { Transaction } from 'src/domain/transaction/transaction.entity';
+import { err, ok } from 'src/shared/result';
 import { CheckoutController } from './checkout.controller';
 import { CreateTransactionDto } from './dto/create-transaction.dto';
 import { PayTransactionDto } from './dto/pay-transaction.dto';

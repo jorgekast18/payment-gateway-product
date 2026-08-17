@@ -1,17 +1,14 @@
-import { Customer } from '../../domain/customer/customer.entity';
-import { CustomerRepository } from '../../domain/customer/customer.repository';
-import { Delivery } from '../../domain/delivery/delivery.entity';
-import { DeliveryRepository } from '../../domain/delivery/delivery.repository';
-import { Product } from '../../domain/product/product.entity';
-import { ProductRepository } from '../../domain/product/product.repository';
-import { Transaction } from '../../domain/transaction/transaction.entity';
-import { TransactionRepository } from '../../domain/transaction/transaction.repository';
+import { Customer } from 'src/domain/customer/customer.entity';
+import { CustomerRepository } from 'src/domain/customer/customer.repository';
+import { Delivery } from 'src/domain/delivery/delivery.entity';
+import { DeliveryRepository } from 'src/domain/delivery/delivery.repository';
+import { Product } from 'src/domain/product/product.entity';
+import { ProductRepository } from 'src/domain/product/product.repository';
+import { Transaction } from 'src/domain/transaction/transaction.entity';
+import { TransactionRepository } from 'src/domain/transaction/transaction.repository';
 import { PricingConfig } from '../ports/pricing.config';
 import { ReferenceGenerator } from '../ports/reference-generator';
-import {
-  CreateTransactionCommand,
-  CreateTransactionUseCase,
-} from './create-transaction.use-case';
+import { CreateTransactionCommand, CreateTransactionUseCase } from './create-transaction.use-case';
 
 const product = new Product({
   id: 'p1',

@@ -1,7 +1,7 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { Product } from '../../../domain/product/product.entity';
-import { Transaction } from '../../../domain/transaction/transaction.entity';
-import { TransactionStatus } from '../../../domain/transaction/transaction-status';
+import { Product } from 'src/domain/product/product.entity';
+import { Transaction } from 'src/domain/transaction/transaction.entity';
+import { TransactionStatus } from 'src/domain/transaction/transaction-status';
 
 export class ProductResponse {
   @ApiProperty()

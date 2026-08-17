@@ -1,7 +1,7 @@
 import { Controller, Get, Param } from '@nestjs/common';
 import { ApiOkResponse, ApiTags } from '@nestjs/swagger';
-import { ListProductsUseCase } from '../../application/products/list-products.use-case';
-import { GetProductUseCase } from '../../application/products/get-product.use-case';
+import { ListProductsUseCase } from 'src/application/products/list-products.use-case';
+import { GetProductUseCase } from 'src/application/products/get-product.use-case';
 import { ProductResponse, toProductResponse } from './dto/responses';
 import { toHttpException } from './http-error.mapper';
 

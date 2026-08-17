@@ -1,4 +1,4 @@
-import { DomainError } from '../../shared/domain-error';
+import { DomainError } from 'src/shared/domain-error';
 
 export class TransactionNotFoundError extends DomainError {
   readonly code = 'TRANSACTION_NOT_FOUND';

@@ -1,5 +1,5 @@
-import { Transaction } from '../../../domain/transaction/transaction.entity';
-import { CompleteApprovalInput } from '../../../domain/transaction/transaction.repository';
+import { Transaction } from 'src/domain/transaction/transaction.entity';
+import { CompleteApprovalInput } from 'src/domain/transaction/transaction.repository';
 import { PrismaService } from './prisma.service';
 import { PrismaTransactionRepository } from './transaction.prisma.repository';
 

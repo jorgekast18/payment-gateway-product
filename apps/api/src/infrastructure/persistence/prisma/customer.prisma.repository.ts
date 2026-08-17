@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
-import { Customer } from '../../../domain/customer/customer.entity';
-import { CustomerRepository } from '../../../domain/customer/customer.repository';
+import { Customer } from 'src/domain/customer/customer.entity';
+import { CustomerRepository } from 'src/domain/customer/customer.repository';
 import { PrismaService } from './prisma.service';
 import { toCustomer } from './prisma.mappers';
 

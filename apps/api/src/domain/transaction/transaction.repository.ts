@@ -1,4 +1,4 @@
-import { Result } from '../../shared/result';
+import { Result } from 'src/shared/result';
 import { InsufficientStockError } from '../product/product.errors';
 import { Transaction } from './transaction.entity';
 import { TransactionStatus } from './transaction-status';

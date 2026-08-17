@@ -1,5 +1,5 @@
 import { createHash } from 'node:crypto';
-import { ChargeCardInput } from '../../domain/payment/payment-gateway.port';
+import { ChargeCardInput } from 'src/domain/payment/payment-gateway.port';
 import { HttpPaymentGateway } from './http-payment-gateway.adapter';
 import { PaymentGatewayConfig } from './payment-gateway.config';
 
@@ -60,7 +60,11 @@ const installFetch = (pollStatuses: string[], transactionOk = true): jest.Mock =
     }
     if (url.endsWith('/transactions') && method === 'POST') {
       capturedTransactionBody = JSON.parse(init?.body ?? '{}') as CapturedBody;
-      return jsonResponse({ data: { id: 'g1', status: 'PENDING' } }, transactionOk, transactionOk ? 200 : 422);
+      return jsonResponse(
+        { data: { id: 'g1', status: 'PENDING' } },
+        transactionOk,
+        transactionOk ? 200 : 422,
+      );
     }
     return jsonResponse({ data: { id: 'g1', status: statuses.shift() ?? 'PENDING' } });
   });

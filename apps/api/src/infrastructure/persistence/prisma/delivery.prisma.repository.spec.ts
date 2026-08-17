@@ -1,4 +1,4 @@
-import { Delivery } from '../../../domain/delivery/delivery.entity';
+import { Delivery } from 'src/domain/delivery/delivery.entity';
 import { PrismaService } from './prisma.service';
 import { PrismaDeliveryRepository } from './delivery.prisma.repository';
 
