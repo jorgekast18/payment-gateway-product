@@ -1,12 +1,12 @@
 import { Injectable } from '@nestjs/common';
-import { err, ok, Result } from '../../../shared/result';
-import { InsufficientStockError } from '../../../domain/product/product.errors';
-import { Transaction } from '../../../domain/transaction/transaction.entity';
+import { err, ok, Result } from 'src/shared/result';
+import { InsufficientStockError } from 'src/domain/product/product.errors';
+import { Transaction } from 'src/domain/transaction/transaction.entity';
 import {
   CompleteApprovalInput,
   FinalizeInput,
   TransactionRepository,
-} from '../../../domain/transaction/transaction.repository';
+} from 'src/domain/transaction/transaction.repository';
 import { PrismaService } from './prisma.service';
 import { toTransaction } from './prisma.mappers';
 
