@@ -1,0 +1,29 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 600" role="img" aria-label="Mechanical keyboard">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#e0f2fe" />
+      <stop offset="1" stop-color="#f0fdfa" />
+    </linearGradient>
+  </defs>
+  <rect width="600" height="600" fill="url(#bg)" />
+  <rect x="90" y="195" width="420" height="210" rx="30" fill="#0f172a" />
+  <g fill="#334155">
+    <rect x="124" y="228" width="34" height="34" rx="8" />
+    <rect x="170" y="228" width="34" height="34" rx="8" />
+    <rect x="216" y="228" width="34" height="34" rx="8" />
+    <rect x="262" y="228" width="34" height="34" rx="8" />
+    <rect x="308" y="228" width="34" height="34" rx="8" />
+    <rect x="354" y="228" width="34" height="34" rx="8" />
+    <rect x="400" y="228" width="34" height="34" rx="8" />
+    <rect x="446" y="228" width="34" height="34" rx="8" fill="#0ea5e9" />
+    <rect x="124" y="276" width="34" height="34" rx="8" />
+    <rect x="170" y="276" width="34" height="34" rx="8" />
+    <rect x="216" y="276" width="34" height="34" rx="8" />
+    <rect x="262" y="276" width="34" height="34" rx="8" />
+    <rect x="308" y="276" width="34" height="34" rx="8" />
+    <rect x="354" y="276" width="34" height="34" rx="8" />
+    <rect x="400" y="276" width="34" height="34" rx="8" />
+    <rect x="446" y="276" width="34" height="34" rx="8" />
+    <rect x="180" y="326" width="240" height="34" rx="10" />
+  </g>
+</svg>

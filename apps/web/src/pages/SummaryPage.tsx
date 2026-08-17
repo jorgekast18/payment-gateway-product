@@ -5,6 +5,7 @@ import { formatCurrency } from '../domain/money';
 import { Frame } from '../components/Frame';
 import { Backdrop } from '../components/Backdrop';
 import { Button } from '../components/Button';
+import { imageForProduct } from '../assets/products';
 
 export const SummaryPage = () => {
   const navigate = useNavigate();
@@ -32,7 +33,7 @@ export const SummaryPage = () => {
       </p>
       <img
         className="product__image"
-        src={product.imageUrl}
+        src={imageForProduct(product.id, product.imageUrl)}
         alt={product.name}
         loading="lazy"
         width={460}

@@ -5,6 +5,7 @@ module.exports = {
   setupFilesAfterEnv: ['<rootDir>/jest.setup.ts'],
   moduleNameMapper: {
     '\\.(css)$': 'identity-obj-proxy',
+    '\\.(svg|png|jpe?g|gif)$': '<rootDir>/src/test/fileMock.ts',
   },
   transform: {
     '^.+\\.(ts|tsx)$': ['ts-jest', { tsconfig: '<rootDir>/tsconfig.spec.json' }],
