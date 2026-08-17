@@ -1,25 +1,31 @@
 import { createHash } from 'node:crypto';
 import { Inject, Injectable } from '@nestjs/common';
 import {
-  CardToken,
-  CardTokenizationInput,
-  ChargeInput,
+  ChargeCardInput,
   ChargeResult,
   GatewayStatus,
   PaymentGateway,
 } from '../../domain/payment/payment-gateway.port';
 import { PAYMENT_GATEWAY_CONFIG, PaymentGatewayConfig } from './payment-gateway.config';
 
-interface AcceptanceResponse {
-  data: { presigned_acceptance: { acceptance_token: string } };
+interface MerchantResponse {
+  data: {
+    presigned_acceptance: { acceptance_token: string };
+    presigned_personal_data_auth: { acceptance_token: string };
+  };
 }
 
 interface TokenizeResponse {
-  data: { id: string; brand: string; last_four: string };
+  data: { id: string };
 }
 
 interface TransactionResponse {
   data: { id: string; status: string };
+}
+
+interface AuthorizationTokens {
+  acceptance: string;
+  personalDataAuth: string;
 }
 
 const TERMINAL_STATUSES: readonly string[] = ['APPROVED', 'DECLINED', 'ERROR', 'VOIDED'];
@@ -30,35 +36,10 @@ export class HttpPaymentGateway implements PaymentGateway {
     @Inject(PAYMENT_GATEWAY_CONFIG) private readonly config: PaymentGatewayConfig,
   ) {}
 
-  async getAcceptanceToken(): Promise<string> {
-    const payload = await this.request<AcceptanceResponse>(
-      'GET',
-      `/merchants/${this.config.publicKey}`,
-    );
-    return payload.data.presigned_acceptance.acceptance_token;
-  }
+  async charge(input: ChargeCardInput): Promise<ChargeResult> {
+    const tokens = await this.fetchAuthorizationTokens();
+    const cardToken = await this.tokenizeCard(input.card);
 
-  async tokenizeCard(input: CardTokenizationInput): Promise<CardToken> {
-    const payload = await this.request<TokenizeResponse>(
-      'POST',
-      this.config.tokenizePath,
-      {
-        number: input.number,
-        cvc: input.cvc,
-        exp_month: input.expMonth,
-        exp_year: input.expYear,
-        card_holder: input.holder,
-      },
-      this.config.publicKey,
-    );
-    return {
-      token: payload.data.id,
-      brand: payload.data.brand,
-      lastFour: payload.data.last_four,
-    };
-  }
-
-  async charge(input: ChargeInput): Promise<ChargeResult> {
     const created = await this.request<TransactionResponse>(
       'POST',
       '/transactions',
@@ -67,17 +48,46 @@ export class HttpPaymentGateway implements PaymentGateway {
         currency: this.config.currency,
         customer_email: input.customerEmail,
         reference: input.reference,
-        acceptance_token: input.acceptanceToken,
+        acceptance_token: tokens.acceptance,
+        accept_personal_auth: tokens.personalDataAuth,
         signature: this.buildSignature(input.reference, input.amountInCents),
         payment_method: {
           type: 'CARD',
-          token: input.cardToken,
+          token: cardToken,
           installments: this.config.installments,
         },
       },
       this.config.privateKey,
     );
+
     return this.waitForResolution(created.data.id);
+  }
+
+  private async fetchAuthorizationTokens(): Promise<AuthorizationTokens> {
+    const merchant = await this.request<MerchantResponse>(
+      'GET',
+      `/merchants/${this.config.publicKey}`,
+    );
+    return {
+      acceptance: merchant.data.presigned_acceptance.acceptance_token,
+      personalDataAuth: merchant.data.presigned_personal_data_auth.acceptance_token,
+    };
+  }
+
+  private async tokenizeCard(card: ChargeCardInput['card']): Promise<string> {
+    const response = await this.request<TokenizeResponse>(
+      'POST',
+      this.config.tokenizePath,
+      {
+        number: card.number,
+        cvc: card.cvc,
+        exp_month: card.expMonth,
+        exp_year: card.expYear,
+        card_holder: card.holder,
+      },
+      this.config.publicKey,
+    );
+    return response.data.id;
   }
 
   private buildSignature(reference: string, amountInCents: number): string {

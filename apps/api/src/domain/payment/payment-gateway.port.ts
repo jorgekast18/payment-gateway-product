@@ -2,26 +2,17 @@ export const PAYMENT_GATEWAY = Symbol('PAYMENT_GATEWAY');
 
 export type GatewayStatus = 'APPROVED' | 'DECLINED' | 'ERROR' | 'PENDING' | 'VOIDED';
 
-export interface CardTokenizationInput {
-  number: string;
-  cvc: string;
-  expMonth: string;
-  expYear: string;
-  holder: string;
-}
-
-export interface CardToken {
-  token: string;
-  brand: string;
-  lastFour: string;
-}
-
-export interface ChargeInput {
+export interface ChargeCardInput {
   amountInCents: number;
   reference: string;
   customerEmail: string;
-  cardToken: string;
-  acceptanceToken: string;
+  card: {
+    number: string;
+    cvc: string;
+    expMonth: string;
+    expYear: string;
+    holder: string;
+  };
 }
 
 export interface ChargeResult {
@@ -30,7 +21,5 @@ export interface ChargeResult {
 }
 
 export interface PaymentGateway {
-  getAcceptanceToken(): Promise<string>;
-  tokenizeCard(input: CardTokenizationInput): Promise<CardToken>;
-  charge(input: ChargeInput): Promise<ChargeResult>;
+  charge(input: ChargeCardInput): Promise<ChargeResult>;
 }

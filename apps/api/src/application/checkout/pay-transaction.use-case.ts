@@ -57,20 +57,17 @@ export class PayTransactionUseCase {
 
     let charge: ChargeResult;
     try {
-      const acceptanceToken = await this.gateway.getAcceptanceToken();
-      const token = await this.gateway.tokenizeCard({
-        number: card.number,
-        cvc: card.cvc,
-        expMonth: card.expMonth,
-        expYear: card.expYear,
-        holder: card.holder,
-      });
       charge = await this.gateway.charge({
         amountInCents: transaction.amountInCents,
         reference: transaction.reference,
         customerEmail: customer.email,
-        cardToken: token.token,
-        acceptanceToken,
+        card: {
+          number: card.number,
+          cvc: card.cvc,
+          expMonth: card.expMonth,
+          expYear: card.expYear,
+          holder: card.holder,
+        },
       });
     } catch (error) {
       await this.transactions.finalize({
