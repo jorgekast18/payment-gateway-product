@@ -1,5 +1,5 @@
 import { HttpException } from '@nestjs/common';
-import { DomainError } from '../../shared/domain-error';
+import { DomainError } from 'src/shared/domain-error';
 
 const STATUS_BY_CODE: Record<string, number> = {
   PRODUCT_NOT_FOUND: 404,

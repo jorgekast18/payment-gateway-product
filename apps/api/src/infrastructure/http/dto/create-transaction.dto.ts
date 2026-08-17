@@ -1,14 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { Type } from 'class-transformer';
-import {
-  IsEmail,
-  IsInt,
-  IsNotEmpty,
-  IsString,
-  IsUUID,
-  Min,
-  ValidateNested,
-} from 'class-validator';
+import { IsEmail, IsInt, IsNotEmpty, IsString, IsUUID, Min, ValidateNested } from 'class-validator';
 
 export class CustomerDto {
   @ApiProperty({ example: 'Jane Doe' })

@@ -1,14 +1,14 @@
-import { Customer } from '../../domain/customer/customer.entity';
-import { CustomerRepository } from '../../domain/customer/customer.repository';
-import { ChargeResult, PaymentGateway } from '../../domain/payment/payment-gateway.port';
-import { InsufficientStockError } from '../../domain/product/product.errors';
-import { Transaction, TransactionProps } from '../../domain/transaction/transaction.entity';
+import { Customer } from 'src/domain/customer/customer.entity';
+import { CustomerRepository } from 'src/domain/customer/customer.repository';
+import { ChargeResult, PaymentGateway } from 'src/domain/payment/payment-gateway.port';
+import { InsufficientStockError } from 'src/domain/product/product.errors';
+import { Transaction, TransactionProps } from 'src/domain/transaction/transaction.entity';
 import {
   FinalizeInput,
   TransactionRepository,
-} from '../../domain/transaction/transaction.repository';
-import { TransactionStatus } from '../../domain/transaction/transaction-status';
-import { err, ok, Result } from '../../shared/result';
+} from 'src/domain/transaction/transaction.repository';
+import { TransactionStatus } from 'src/domain/transaction/transaction-status';
+import { err, ok, Result } from 'src/shared/result';
 import { PayTransactionUseCase } from './pay-transaction.use-case';
 
 const futureYear = ((new Date().getFullYear() + 3) % 100).toString().padStart(2, '0');
@@ -70,8 +70,7 @@ const buildUseCase = (
   };
   const customers: CustomerRepository = {
     create: () => Promise.resolve(customer),
-    findById: () =>
-      Promise.resolve('customer' in overrides ? overrides.customer! : customer),
+    findById: () => Promise.resolve('customer' in overrides ? overrides.customer! : customer),
   };
   const gateway: PaymentGateway = {
     charge:

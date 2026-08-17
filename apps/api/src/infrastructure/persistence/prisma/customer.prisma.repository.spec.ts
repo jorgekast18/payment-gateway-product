@@ -1,4 +1,4 @@
-import { Customer } from '../../../domain/customer/customer.entity';
+import { Customer } from 'src/domain/customer/customer.entity';
 import { PrismaService } from './prisma.service';
 import { PrismaCustomerRepository } from './customer.prisma.repository';
 

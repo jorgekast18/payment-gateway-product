@@ -1,18 +1,15 @@
-import { err, ok, Result } from '../../shared/result';
-import { CustomerRepository } from '../../domain/customer/customer.repository';
-import { CreditCard, CreditCardInput } from '../../domain/payment/credit-card';
-import {
-  InvalidCreditCardError,
-  PaymentGatewayError,
-} from '../../domain/payment/payment.errors';
-import { ChargeResult, PaymentGateway } from '../../domain/payment/payment-gateway.port';
-import { InsufficientStockError } from '../../domain/product/product.errors';
-import { Transaction } from '../../domain/transaction/transaction.entity';
-import { TransactionRepository } from '../../domain/transaction/transaction.repository';
+import { err, ok, Result } from 'src/shared/result';
+import { CustomerRepository } from 'src/domain/customer/customer.repository';
+import { CreditCard, CreditCardInput } from 'src/domain/payment/credit-card';
+import { InvalidCreditCardError, PaymentGatewayError } from 'src/domain/payment/payment.errors';
+import { ChargeResult, PaymentGateway } from 'src/domain/payment/payment-gateway.port';
+import { InsufficientStockError } from 'src/domain/product/product.errors';
+import { Transaction } from 'src/domain/transaction/transaction.entity';
+import { TransactionRepository } from 'src/domain/transaction/transaction.repository';
 import {
   TransactionNotFoundError,
   TransactionNotPendingError,
-} from '../../domain/transaction/transaction.errors';
+} from 'src/domain/transaction/transaction.errors';
 
 export interface PayTransactionCommand {
   transactionId: string;
@@ -33,9 +30,7 @@ export class PayTransactionUseCase {
     private readonly gateway: PaymentGateway,
   ) {}
 
-  async execute(
-    command: PayTransactionCommand,
-  ): Promise<Result<Transaction, PayTransactionError>> {
+  async execute(command: PayTransactionCommand): Promise<Result<Transaction, PayTransactionError>> {
     const transaction = await this.transactions.findById(command.transactionId);
     if (!transaction) {
       return err(new TransactionNotFoundError(command.transactionId));
@@ -104,7 +99,8 @@ export class PayTransactionUseCase {
       return ok(approval.value);
     }
 
-    const status = charge.status === 'DECLINED' || charge.status === 'VOIDED' ? 'DECLINED' : 'ERROR';
+    const status =
+      charge.status === 'DECLINED' || charge.status === 'VOIDED' ? 'DECLINED' : 'ERROR';
     const finalized = await this.transactions.finalize({
       transactionId: transaction.id!,
       status,

@@ -1,7 +1,7 @@
-import { err, ok, Result } from '../../shared/result';
-import { Product } from '../../domain/product/product.entity';
-import { ProductRepository } from '../../domain/product/product.repository';
-import { ProductNotFoundError } from '../../domain/product/product.errors';
+import { err, ok, Result } from 'src/shared/result';
+import { Product } from 'src/domain/product/product.entity';
+import { ProductRepository } from 'src/domain/product/product.repository';
+import { ProductNotFoundError } from 'src/domain/product/product.errors';
 
 export class GetProductUseCase {
   constructor(private readonly products: ProductRepository) {}

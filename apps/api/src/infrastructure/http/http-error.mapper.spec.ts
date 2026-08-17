@@ -1,6 +1,6 @@
 import { HttpException } from '@nestjs/common';
-import { DomainError } from '../../shared/domain-error';
-import { ProductNotFoundError } from '../../domain/product/product.errors';
+import { DomainError } from 'src/shared/domain-error';
+import { ProductNotFoundError } from 'src/domain/product/product.errors';
 import { toHttpException } from './http-error.mapper';
 
 class UnknownError extends DomainError {

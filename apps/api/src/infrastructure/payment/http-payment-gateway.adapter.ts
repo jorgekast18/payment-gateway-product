@@ -5,7 +5,7 @@ import {
   ChargeResult,
   GatewayStatus,
   PaymentGateway,
-} from '../../domain/payment/payment-gateway.port';
+} from 'src/domain/payment/payment-gateway.port';
 import { PAYMENT_GATEWAY_CONFIG, PaymentGatewayConfig } from './payment-gateway.config';
 
 interface MerchantResponse {
@@ -32,9 +32,7 @@ const TERMINAL_STATUSES: readonly string[] = ['APPROVED', 'DECLINED', 'ERROR', '
 
 @Injectable()
 export class HttpPaymentGateway implements PaymentGateway {
-  constructor(
-    @Inject(PAYMENT_GATEWAY_CONFIG) private readonly config: PaymentGatewayConfig,
-  ) {}
+  constructor(@Inject(PAYMENT_GATEWAY_CONFIG) private readonly config: PaymentGatewayConfig) {}
 
   async charge(input: ChargeCardInput): Promise<ChargeResult> {
     const tokens = await this.fetchAuthorizationTokens();

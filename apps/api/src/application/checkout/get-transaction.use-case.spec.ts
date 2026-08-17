@@ -1,5 +1,5 @@
-import { Transaction } from '../../domain/transaction/transaction.entity';
-import { TransactionRepository } from '../../domain/transaction/transaction.repository';
+import { Transaction } from 'src/domain/transaction/transaction.entity';
+import { TransactionRepository } from 'src/domain/transaction/transaction.repository';
 import { GetTransactionUseCase } from './get-transaction.use-case';
 
 const transaction = Transaction.fromPersistence({

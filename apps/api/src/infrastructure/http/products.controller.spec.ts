@@ -1,9 +1,9 @@
 import { HttpException } from '@nestjs/common';
-import { GetProductUseCase } from '../../application/products/get-product.use-case';
-import { ListProductsUseCase } from '../../application/products/list-products.use-case';
-import { Product } from '../../domain/product/product.entity';
-import { ProductNotFoundError } from '../../domain/product/product.errors';
-import { err, ok } from '../../shared/result';
+import { GetProductUseCase } from 'src/application/products/get-product.use-case';
+import { ListProductsUseCase } from 'src/application/products/list-products.use-case';
+import { Product } from 'src/domain/product/product.entity';
+import { ProductNotFoundError } from 'src/domain/product/product.errors';
+import { err, ok } from 'src/shared/result';
 import { ProductsController } from './products.controller';
 
 const product = new Product({
@@ -17,7 +17,9 @@ const product = new Product({
 
 describe('ProductsController', () => {
   it('returns the mapped list of products', async () => {
-    const list = { execute: jest.fn().mockResolvedValue([product]) } as unknown as ListProductsUseCase;
+    const list = {
+      execute: jest.fn().mockResolvedValue([product]),
+    } as unknown as ListProductsUseCase;
     const get = { execute: jest.fn() } as unknown as GetProductUseCase;
 
     const response = await new ProductsController(list, get).findAll();
@@ -36,7 +38,9 @@ describe('ProductsController', () => {
 
   it('returns a single product when found', async () => {
     const list = { execute: jest.fn() } as unknown as ListProductsUseCase;
-    const get = { execute: jest.fn().mockResolvedValue(ok(product)) } as unknown as GetProductUseCase;
+    const get = {
+      execute: jest.fn().mockResolvedValue(ok(product)),
+    } as unknown as GetProductUseCase;
 
     const response = await new ProductsController(list, get).findOne('p1');
 

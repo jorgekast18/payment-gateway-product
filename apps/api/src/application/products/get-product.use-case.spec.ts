@@ -1,5 +1,5 @@
-import { Product } from '../../domain/product/product.entity';
-import { ProductRepository } from '../../domain/product/product.repository';
+import { Product } from 'src/domain/product/product.entity';
+import { ProductRepository } from 'src/domain/product/product.repository';
 import { GetProductUseCase } from './get-product.use-case';
 
 const product = new Product({

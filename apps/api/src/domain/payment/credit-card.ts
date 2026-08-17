@@ -1,4 +1,4 @@
-import { err, ok, Result } from '../../shared/result';
+import { err, ok, Result } from 'src/shared/result';
 import { InvalidCreditCardError } from './payment.errors';
 
 export type CardBrand = 'VISA' | 'MASTERCARD';
@@ -97,7 +97,9 @@ export class CreditCard {
     }
 
     const expMonth = month.toString().padStart(2, '0');
-    return ok(new CreditCard(number, input.cvc, expMonth, input.expYear, input.holder.trim(), brand));
+    return ok(
+      new CreditCard(number, input.cvc, expMonth, input.expYear, input.holder.trim(), brand),
+    );
   }
 
   get lastFour(): string {
