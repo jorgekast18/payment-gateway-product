@@ -56,6 +56,59 @@ refresh resumes where the buyer left off, while raw card data is never persisted
 
 Every decision is recorded in [docs/adr](docs/adr/README.md).
 
+## Data model
+
+```mermaid
+erDiagram
+    PRODUCT ||--o{ TRANSACTION : "sold in"
+    CUSTOMER ||--o{ TRANSACTION : places
+    TRANSACTION |o--|| DELIVERY : "shipped via"
+
+    PRODUCT {
+        uuid id PK
+        string name
+        string description
+        int priceInCents
+        string imageUrl
+        int stock
+    }
+    CUSTOMER {
+        uuid id PK
+        string fullName
+        string email
+        string phone
+    }
+    DELIVERY {
+        uuid id PK
+        string address
+        string city
+        string region
+        string postalCode
+        enum status "PENDING or ASSIGNED"
+    }
+    TRANSACTION {
+        uuid id PK
+        string reference UK
+        enum status "PENDING APPROVED DECLINED ERROR"
+        int quantity
+        int productAmountInCents
+        int baseFeeInCents
+        int deliveryFeeInCents
+        int amountInCents
+        string cardBrand
+        string cardLastFour
+        string gatewayTransactionId
+        uuid productId FK
+        uuid customerId FK
+        uuid deliveryId FK
+    }
+```
+
+Money is stored as integer cents. Card data is never persisted — only the brand
+and the last four digits are kept for the receipt. A transaction consumes stock
+and produces a delivery only when it is approved.
+See [ADR 0004](docs/adr/0004-data-model.md).
+
 ## Tech stack
 
 | Layer | Choice |
