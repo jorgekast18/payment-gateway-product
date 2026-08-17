@@ -1,7 +1,7 @@
 # ADR 0004 — Data model
 
 - Status: Accepted
-- Date: 2025-10-09
+- Date: 2026-08-17
 
 ## Context
 

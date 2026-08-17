@@ -1,7 +1,7 @@
 # ADR 0002 — Hexagonal architecture (Ports and Adapters)
 
 - Status: Accepted
-- Date: 2025-10-09
+- Date: 2026-08-17
 
 ## Context
 
